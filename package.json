@@ -1,0 +1,33 @@
+{
+  "name": "select-shell",
+  "version": "0.0.1",
+  "description": "list of select for nodejs on terminal.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "luizstacio",
+  "license": "MIT",
+  "dependencies": {
+    "colors": "~0.6.2"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:luizstacio/select-shell.git"
+  },
+  "keywords": [
+    "select",
+    "list",
+    "checklist",
+    "options",
+    "list",
+    "options",
+    "list",
+    "checkbox"
+  ],
+  "bugs": {
+    "url": "https://github.com/luizstacio/select-shell/issues"
+  },
+  "homepage": "https://github.com/luizstacio/select-shell"
+}
