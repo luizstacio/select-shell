@@ -106,12 +106,13 @@ function list (onSelect) {
 
 function close () {
   stream.removeListener('keypress', keypress);
+  processOut.write(encode('[?25h'));
 }
 
 function selectoption () {
-  eventEmitter.emit('select', optionsSelected);
-  select(optionsSelected);
   close();
+  select(optionsSelected);
+  eventEmitter.emit('select', optionsSelected);
 }
 
 function keypress (ch, key) {
@@ -133,9 +134,9 @@ function keypress (ch, key) {
     selectoption();
     break;
   case 'escape':
+    close();
     if (config.msgCancel) console.log(config.msgCancel[config.msgCancelColor]);
     eventEmitter.emit('cancel', optionsSelected);
-    close();
     break;
   default: break;
   }
