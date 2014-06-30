@@ -9,6 +9,16 @@ list of select for nodejs on terminal.
 ```
 
 ####Using
+
+Navigate with arrows
+
+**Up and Down** - Navigates on the options<br/>
+**Right** - Check the option<br/>
+**Left** - Uncheck the option<br/>
+**Enter/Return** - confirms the options selected<br/>
+**Esc** - Cancel/Exit<br/>
+
+#####Code
 ``` 
 var select = require('select-shell')();
 var stream = process.stdin;
