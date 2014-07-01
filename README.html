@@ -122,47 +122,48 @@ body{font-size:16px;}
 }
 </style><title>README</title></head><body><h1 id="select-shell">select-shell</h1>
 <p>list of select for nodejs on terminal.</p>
-<h4 id="install">Install</h4>
+<h3 id="install">Install</h3>
 <pre><code>  $ npm install select-shell
 </code></pre>
 
-<h4 id="using">Using</h4>
+<h3 id="using">Using</h3>
 <p>Navigate with arrows</p>
 <p><strong>Up and Down</strong> - Navigates on the options<br/>
 <strong>Right</strong> - Check the option<br/>
 <strong>Left</strong> - Uncheck the option<br/>
 <strong>Enter/Return</strong> - confirms the options selected<br/>
 <strong>Esc</strong> - Cancel/Exit<br/></p>
-<h5 id="code">Code</h5>
-<pre><code>var select = require('select-shell')();
+<h3 id="code">Code</h3>
+<pre><code>
+'use strict';
+
+var selectShell = require('./index');
 var stream = process.stdin;
+var select = selectShell();
 
 /* 
   select.option(text, value)
   Value is optinal. The default value is equal the text.
 */
-select.option('One')
-      .option('Two')
-      .option('Three')
-      .list();
+select.option('One', 1)
+      .option('Two', 2)
+      .option('Three', 3)
+      .select();
 
-/*
-  select.event is the a EventEmitter
-*/
-select.event.on('select', function(options){
-  /* Return the options selected. Ex.: [{ text: '', value: '' }] */
+select.on('select', function(options){
+  /* Return the options selected. Ex.: [{ text: '', value: '' }] or { text: '', value: '' } depends the config multiSelect */
   console.log(options);
   process.exit(0);
 });
 
-select.event.on('cancel', function(options){
-  /* Return the options selected. Ex.: [{ text: '', value: '' }] */
+select.on('cancel', function(options){
+  /* Return the options selected. Ex.: [{ text: '', value: '' }] or { text: '', value: '' } depends the config multiSelect */
   console.log('Cancel select, '+ options.length +' options selected');
   process.exit(0);
 });
 </code></pre>
 
-<h4 id="optional-configs">Optional configs</h4>
+<h3 id="optional-configs">Optional configs</h3>
 <pre><code>var select = require('select-shell)(
   /* Default values */
   {
@@ -171,14 +172,13 @@ select.event.on('cancel', function(options){
     checked: ' ✓',
     checkedColor: 'green',
     msgCancel: 'No selected options!',
-    msgCancelColor: 'red'
-  },
-  /* Stream */
-  stream
+    msgCancelColor: 'red',
+    multiSelect: true
+  }
 );
 </code></pre>
 
-<h5 id="the-scheme-of-color-is-equal-to-the-module-colors">The scheme of color is equal to the module <a href="https://github.com/Marak/colors.js" title="module colors">colors</a>.</h5>
+<h3 id="the-scheme-of-color-is-equal-to-the-module-colors">The scheme of color is equal to the module <a href="https://github.com/Marak/colors.js" title="module colors">colors</a>.</h3>
 <ul>
 <li>bold</li>
 <li>italic</li>

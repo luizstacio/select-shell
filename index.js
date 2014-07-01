@@ -1,30 +1,11 @@
 'use strict';
 
-var config = {
-  pointer: '> ',
-  pointerColor: 'white',
-  checked: ' ✓',
-  checkedColor: 'green',
-  msgCancel: 'No selected options!',
-  msgCancelColor: 'red'
-};
-
-module.exports = function(conf){
-  
-  for ( var c in conf ) {
-    config[c] = conf[c];
-  }
-
-  return {
-    option: option,
-    list: list,
-    event: eventEmitter
-  };
-};
-
+/**
+ * Module dependencies.
+ *
+ */
 var events = require('events');
-var eventEmitter = new events.EventEmitter();
-
+var eventEmitter = require('events').EventEmitter;
 var encode = require('./encode');
 var readline = require('colors');
 var readline = require('readline');
@@ -35,111 +16,235 @@ var rl = readline.createInterface({
 var stream = process.stdin;
 var processOut = process.stdout;
 
-var options = [],
-    optionsLength = 0,
-    pointerPosition = 0,
-    optionsSelected = [],
-    currentoption,
-    select = function(){};
+/**
+ * Expose function invoke
+ */
+module.exports = function(conf) {
+  return new Select(conf);
+};
 
-function render () {
-  options.forEach(function(option, position){
-    var prefix = (position === pointerPosition) ? config.pointer : config.pointer.replace(/[(\w\W)(\ )]/g, ' '),
-        checked = optionsSelected.indexOf(option) !== -1 ? config.checked[config.checkedColor] : '';
+/**
+ * Initialize a new Select.
+ *
+ * @param {Object} conf
+ * @api public
+ */
+
+var Select = function (conf){
+  this.config = {
+    pointer: '> ',
+    pointerColor: 'white',
+    checked: ' ✓',
+    checkedColor: 'green',
+    msgCancel: 'No selected options!',
+    msgCancelColor: 'red',
+    multiSelect: true
+  };
+  this.options = [];
+  this.optionsLength = 0;
+  this.pointerPosition = 0;
+  this.optionsSelected = [];
+  this.currentoption = undefined;
+  this.select = undefined;
+  this.keypress = this.keypress.bind(this);
+
+  for ( var c in conf ) {
+    this.config[c] = conf[c];
+  }
+
+  stream.on('keypress', this.keypress);
+};
+
+/**
+ * Inherit from `EventEmitter.prototype`.
+ */
+Select.prototype.__proto__ = eventEmitter.prototype;
+
+/**
+  * @event select
+  * Fires after press return
+  *
+  * @param {Object/Object[]} option/options
+  *
+  * @event cancel
+  * Fires after press esc and cancel select process
+  *
+  * @param {Object/Object[]} option/options
+  */
+
+/**
+ * Render options.
+ *
+ * @api private
+ */
+Select.prototype.render = function () {
+  var me = this;
+
+  me.options.forEach(function(option, position){
+    var prefix = ( position === me.pointerPosition ) ? me.config.pointer : me.config.pointer.replace(/[(\w\W)(\ )]/g, ' '),
+        checked = me.optionsSelected.indexOf(option) !== -1 ? me.config.checked[ me.config.checkedColor ] : '';
     
-    currentoption = prefix.trim() ? option : currentoption;
-    console.log(prefix[config.pointerColor]+option.text+checked);
+    me.currentoption = prefix.trim() ? option : me.currentoption;
+    console.log( prefix[ me.config.pointerColor ] + option.text + checked );
   });
   processOut.write(encode('[?25l'));
-}
+};
 
-function changeSelected () {
-  clearList();
-  render();
-}
+/**
+ * Clean the terminal options and render options.
+ *
+ * @api private
+ */
+Select.prototype.changeSelected = function () {
+  this.clearList();
+  this.render();
+};
 
-function clearList (postionCursor) {
+/**
+ * Clean list
+ *
+ * @api private
+ */
+Select.prototype.clearList = function (postionCursor) {
   readline.cursorTo(stream, 0);
-  readline.moveCursor(stream, 0, -optionsLength);
+  readline.moveCursor(stream, 0, -this.optionsLength);
   readline.clearScreenDown(stream);
-}
+};
 
-function next () {
-  pointerPosition += ( pointerPosition < (optionsLength - 1) ) ? 1 : 0;
-  changeSelected();
-}
+/**
+ * Change pointerPosition
+ *
+ * @api private
+ */
+Select.prototype.next = function () {
+  this.pointerPosition += ( this.pointerPosition < (this.optionsLength - 1) ) ? 1 : 0;
+  this.changeSelected();
+};
 
-function prev () {
-  pointerPosition -= ( pointerPosition > 0 ) ? 1 : 0;
-  changeSelected();
-}
+/**
+ * Change pointerPosition 
+ *
+ * @api private
+ */
+Select.prototype.prev = function () {
+  this.pointerPosition -= ( this.pointerPosition > 0 ) ? 1 : 0;
+  this.changeSelected();
+};
 
-function checkoption () {
-  var optionPosition = optionsSelected.indexOf(currentoption);
+/**
+ * Check the option 
+ *
+ * @api private
+ */
+Select.prototype.checkoption = function () {
+  var optionPosition = this.optionsSelected.indexOf(this.currentoption);
 
   if ( optionPosition === -1 ) {
-    optionsSelected.push(options[pointerPosition]);
-    changeSelected();
+    if ( this.config.multiSelect ) {
+      this.optionsSelected.push(this.options[this.pointerPosition]);
+    } else {
+      this.optionsSelected.splice(0, 1, this.options[this.pointerPosition]);
+    }
+    this.changeSelected();
   }
-}
+};
 
-function uncheckoption () {
-  var optionPosition = optionsSelected.indexOf(currentoption);
+/**
+ * Uncheck the option
+ *
+ * @api private
+ */
+Select.prototype.uncheckoption = function () {
+  var optionPosition = this.optionsSelected.indexOf(this.currentoption);
 
   if ( optionPosition !== -1 ) {
-    optionsSelected.splice(optionPosition, 1);
-    changeSelected();
+    this.optionsSelected.splice(optionPosition, 1);
+    this.changeSelected();
   } 
-}
+};
 
-function option (text, value) {
-  options.push({ text: text, value: value || text });
-  optionsLength = options.length;
+/**
+ * Add options in select list
+ *
+ * @return {Object/Class} Select
+ * @api public
+ */
+Select.prototype.option = function (text, value) {
+  this.options.push({ text: text, value: value || text });
+  this.optionsLength = this.options.length;
   return this;
-}
+};
 
-function list (onSelect) {
-  render();
-  select = onSelect || select;
+/**
+ * Show the options in the terminal
+ *
+ * @return {Object/Class} Select
+ * @api public
+ */
+Select.prototype.list = function (onSelect) {
+  this.render();
+  this.select = onSelect || function(){};
   return this;
-}
+};
 
-function close () {
-  stream.removeListener('keypress', keypress);
+/**
+ * Finish the select-shell
+ *
+ * @api private
+ */
+Select.prototype.close = function () {
+  stream.removeListener('keypress', this.keypress);
   processOut.write(encode('[?25h'));
-}
+};
 
-function selectoption () {
-  close();
-  select(optionsSelected);
-  eventEmitter.emit('select', optionsSelected);
-}
+/**
+ * Select the options and finish
+ *
+ * @api private
+ */
+Select.prototype.selectoption = function () {
+  var r = this.config.multiSelect ? this.optionsSelected : this.optionsSelected[0];
 
-function keypress (ch, key) {
+  this.beforeClose();
+  this.select(r);
+  this.emit('select', r);
+};
+
+Select.prototype.cancel = function () {
+  var r = this.config.multiSelect ? this.optionsSelected : this.optionsSelected[0];
+
+  this.close();
+  if (this.config.msgCancel) console.log(this.config.msgCancel[this.config.msgCancelColor]);
+  this.emit('cancel', this.optionsSelected);
+};
+
+/**
+ * Event maneger events on keypress
+ *
+ * @api private
+ */
+Select.prototype.keypress = function (ch, key) {
+
   switch(key.name) {
   case 'up':
-    prev();       
+    this.prev();       
     break;
   case 'down':
-    next();
+    this.next();
     break;
   case 'right':
-    checkoption();
+    this.checkoption();
     break;
   case 'left':
-    uncheckoption();
+    this.uncheckoption();
     break;
   case 'return':
     readline.moveCursor(stream, 0, -1);/* remove new line */
-    selectoption();
+    this.selectoption();
     break;
   case 'escape':
-    close();
-    if (config.msgCancel) console.log(config.msgCancel[config.msgCancelColor]);
-    eventEmitter.emit('cancel', optionsSelected);
+    this.cancel();
     break;
   default: break;
   }
-}
-
-stream.on('keypress', keypress);
+};

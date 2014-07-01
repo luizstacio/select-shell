@@ -8,12 +8,12 @@ list.option('One')
     .option('Three')
     .list();
 
-list.event.on('select', function(options){
+list.on('select', function(options){
   console.log(options);
   process.exit(0);
 });
 
-list.event.on('cancel', function(options){
+list.on('cancel', function(options){
   console.log('Cancel list, '+ options.length +' options selected');
   process.exit(0);
 });

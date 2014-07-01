@@ -3,12 +3,12 @@ select-shell
 
 list of select for nodejs on terminal.
 
-####Install
+###Install
 ```
   $ npm install select-shell
 ```
 
-####Using
+###Using
 
 Navigate with arrows
 
@@ -18,37 +18,38 @@ Navigate with arrows
 **Enter/Return** - confirms the options selected<br/>
 **Esc** - Cancel/Exit<br/>
 
-#####Code
+###Code
 ``` 
-var select = require('select-shell')();
+
+'use strict';
+
+var selectShell = require('./index');
 var stream = process.stdin;
+var select = selectShell();
 
 /* 
   select.option(text, value)
   Value is optinal. The default value is equal the text.
 */
-select.option('One')
-      .option('Two')
-      .option('Three')
-      .list();
+select.option('One', 1)
+      .option('Two', 2)
+      .option('Three', 3)
+      .select();
 
-/*
-  select.event is the a EventEmitter
-*/
-select.event.on('select', function(options){
-  /* Return the options selected. Ex.: [{ text: '', value: '' }] */
+select.on('select', function(options){
+  /* Return the options selected. Ex.: [{ text: '', value: '' }] or { text: '', value: '' } depends the config multiSelect */
   console.log(options);
   process.exit(0);
 });
 
-select.event.on('cancel', function(options){
-  /* Return the options selected. Ex.: [{ text: '', value: '' }] */
+select.on('cancel', function(options){
+  /* Return the options selected. Ex.: [{ text: '', value: '' }] or { text: '', value: '' } depends the config multiSelect */
   console.log('Cancel select, '+ options.length +' options selected');
   process.exit(0);
 });
 ```
 
-####Optional configs
+###Optional configs
 ```
 var select = require('select-shell)(
   /* Default values */
@@ -58,13 +59,12 @@ var select = require('select-shell)(
     checked: ' ✓',
     checkedColor: 'green',
     msgCancel: 'No selected options!',
-    msgCancelColor: 'red'
-  },
-  /* Stream */
-  stream
+    msgCancelColor: 'red',
+    multiSelect: true
+  }
 );
 ```
-#####The scheme of color is equal to the module [colors](https://github.com/Marak/colors.js "module colors").
+###The scheme of color is equal to the module [colors](https://github.com/Marak/colors.js "module colors").
 
   - bold
   - italic
