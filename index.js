@@ -205,7 +205,7 @@ Select.prototype.close = function () {
 Select.prototype.selectoption = function () {
   var r = this.config.multiSelect ? this.optionsSelected : this.optionsSelected[0];
 
-  this.beforeClose();
+  this.close();
   this.select(r);
   this.emit('select', r);
 };

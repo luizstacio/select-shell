@@ -1,6 +1,6 @@
 {
   "name": "select-shell",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "list of select for nodejs on terminal.",
   "main": "index.js",
   "scripts": {
