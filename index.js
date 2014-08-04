@@ -170,7 +170,9 @@ Select.prototype.uncheckoption = function () {
  * @api public
  */
 Select.prototype.option = function (text, value) {
-  this.options.push({ text: text, value: value || text });
+  value = value !== undefined ? value : text;
+  
+  this.options.push({ text: text, value: value });
   this.optionsLength = this.options.length;
   return this;
 };
