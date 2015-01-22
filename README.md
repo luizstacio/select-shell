@@ -51,7 +51,7 @@ select.on('cancel', function(options){
 
 ###Optional configs
 ```
-var select = require('select-shell)(
+var select = require('select-shell')(
   /* Default values */
   {
     pointer: '> ',
