@@ -20,50 +20,64 @@ Navigate with arrows
 
 ###Code
 ``` 
-
 'use strict';
 
-var selectShell = require('./index');
+var list = require('./index')(
+  /* Default values */
+  {
+    pointer: ' ▸ ',
+    pointerColor: 'yellow',
+    checked: ' ◉  ',
+    unchecked:' ◎  ',
+    checkedColor: 'blue',
+    msgCancel: 'No selected options!',
+    msgCancelColor: 'orange',
+    multiSelect: false,
+    inverse: true,
+    prepend: true
+  }
+);
+
 var stream = process.stdin;
-var select = selectShell();
 
-/* 
-  select.option(text, value)
-  Value is optinal. The default value is equal the text.
-*/
-select.option('One', 1)
-      .option('Two', 2)
-      .option('Three', 3)
-      .select();
+list.option(' One    ')
+    .option(' Two    ')
+    .option(' Three  ')
+    .list();
 
-select.on('select', function(options){
-  /* Return the options selected. Ex.: [{ text: '', value: '' }] or { text: '', value: '' } depends the config multiSelect */
+list.on('select', function(options){
   console.log(options);
   process.exit(0);
 });
 
-select.on('cancel', function(options){
-  /* Return the options selected. Ex.: [{ text: '', value: '' }] or { text: '', value: '' } depends the config multiSelect */
-  console.log('Cancel select, '+ options.length +' options selected');
+list.on('cancel', function(options){
+  console.log('Cancel list, '+ options.length +' options selected');
   process.exit(0);
 });
 ```
 
+![select-shell example image](https://raw.github.com/mralexgray/select-shell/selection-options/sample.png)
+
+
 ###Optional configs
 ```
 var select = require('select-shell')(
-  /* Default values */
+  /* These are the default values */
   {
     pointer: '> ',
     pointerColor: 'white',
     checked: ' ✓',
+    unchecked: '',
     checkedColor: 'green',
     msgCancel: 'No selected options!',
     msgCancelColor: 'red',
-    multiSelect: true
+    multiSelect: true,
+    inverse: true,
+    prepend: false
   }
 );
 ```
+
 ###The scheme of color is equal to the module [colors](https://github.com/Marak/colors.js "module colors").
 
   - bold

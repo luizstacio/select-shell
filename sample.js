@@ -3,14 +3,14 @@
 var list = require('./index')(
   /* Default values */
   {
-    pointer: '> ',
-    pointerColor: 'red',
+    pointer: ' ▸ ',
+    pointerColor: 'yellow',
     checked: ' ◉  ',
-		unchecked: ' ◎  ',
+    unchecked:' ◎  ',
     checkedColor: 'blue',
     msgCancel: 'No selected options!',
-    msgCancelColor: 'red',
-    multiSelect: true,
+    msgCancelColor: 'orange',
+    multiSelect: false,
 		inverse: true,
 		prepend: true
   }
