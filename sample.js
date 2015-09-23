@@ -1,7 +1,7 @@
 'use strict';
 
 var list = require('./index')(
-  /* Default values */
+  /* possible configs */
   {
     pointer: ' ▸ ',
     pointerColor: 'yellow',
@@ -10,9 +10,9 @@ var list = require('./index')(
     checkedColor: 'blue',
     msgCancel: 'No selected options!',
     msgCancelColor: 'orange',
-    multiSelect: false,
-		inverse: true,
-		prepend: true
+    multiSelect: true,
+    inverse: true,
+    prepend: true
   }
 );
 
@@ -32,5 +32,3 @@ list.on('cancel', function(options){
   console.log('Cancel list, '+ options.length +' options selected');
   process.exit(0);
 });
-
-

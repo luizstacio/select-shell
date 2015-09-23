@@ -23,7 +23,7 @@ Navigate with arrows
 'use strict';
 
 var list = require('./index')(
-  /* Default values */
+  /* possible configs */
   {
     pointer: ' ▸ ',
     pointerColor: 'yellow',
@@ -32,7 +32,7 @@ var list = require('./index')(
     checkedColor: 'blue',
     msgCancel: 'No selected options!',
     msgCancelColor: 'orange',
-    multiSelect: false,
+    multiSelect: true,
     inverse: true,
     prepend: true
   }
@@ -72,7 +72,7 @@ var select = require('select-shell')(
     msgCancel: 'No selected options!',
     msgCancelColor: 'red',
     multiSelect: true,
-    inverse: true,
+    inverse: false,
     prepend: false
   }
 );
