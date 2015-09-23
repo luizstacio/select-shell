@@ -35,10 +35,13 @@ var Select = function (conf){
     pointer: '> ',
     pointerColor: 'white',
     checked: ' ✓',
+		unchecked: '',
     checkedColor: 'green',
     msgCancel: 'No selected options!',
     msgCancelColor: 'red',
-    multiSelect: true
+    multiSelect: true,
+    inverse: true,
+    prepend: false
   };
   this.options = [];
   this.optionsLength = 0;
@@ -81,11 +84,20 @@ Select.prototype.render = function () {
   var me = this;
 
   me.options.forEach(function(option, position){
-    var prefix = ( position === me.pointerPosition ) ? me.config.pointer : me.config.pointer.replace(/[(\w\W)(\ )]/g, ' '),
-        checked = me.optionsSelected.indexOf(option) !== -1 ? me.config.checked[ me.config.checkedColor ] : '';
+		
+    var prefix = ( position === me.pointerPosition ) ? me.config.pointer 
+																										 : me.config.pointer.replace(/[(\w\W)(\ )]/g, ' ')
+
+    var checked = me.optionsSelected.indexOf(option) !== -1 ? me.config.checked[ me.config.checkedColor ] 
+																														: me.config.unchecked[ me.config.checkedColor ] 
     
     me.currentoption = prefix.trim() ? option : me.currentoption;
-    console.log( prefix[ me.config.pointerColor ] + option.text + checked );
+		
+    console.log( prefix[ me.config.pointerColor ] + 
+							  (me.config.prepend ? checked : '') + 
+		            (position === me.pointerPosition && me.config.inverse ? option.text[ 'inverse' ] : option.text) +
+			          (me.config.prepend ? '' : checked) 
+		);
   });
   processOut.write(encode('[?25l'));
 };
