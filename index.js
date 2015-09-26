@@ -238,6 +238,7 @@ Select.prototype.cancel = function () {
  * @api private
  */
 Select.prototype.keypress = function (ch, key) {
+  key = key || {};
 
   switch(key.name) {
   case 'up':

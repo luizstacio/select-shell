@@ -8,8 +8,7 @@ var list = require('./index')(
     checked: ' ◉  ',
     unchecked:' ◎  ',
     checkedColor: 'blue',
-    msgCancel: 'No selected options!',
-    msgCancelColor: 'orange',
+    msgCancel: '',
     multiSelect: true,
     inverse: true,
     prepend: true
@@ -24,7 +23,7 @@ list.option(' One    ')
     .list();
 
 list.on('select', function(options){
-  console.log(options);
+  console.log('select', options);
   process.exit(0);
 });
 
