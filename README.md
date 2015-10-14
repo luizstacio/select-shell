@@ -1,16 +1,26 @@
 select-shell
-===============
+============
 
-list of select for nodejs on terminal.
+#####**Item selection _for commandline nodejs apps._**
 
-###Install
+- [x] Easy to use.
+- [x] Single / multiple item-select.
+- [x] Optional cancel message.
+- [x] Color/styling/spacing options.
+- [x] Only depends on 'colors'!
+
+
+![select-shell example image](https://raw.github.com/mralexgray/select-shell/selection-options/sample.png)
+
+
+####Installation
 ```
-  $ npm install select-shell
+npm install select-shell
 ```
 
-###Using
+####Usage
 
-Navigate with arrows
+Simply navigate + make selection with the arrow keys...
 
 **Up and Down** - Navigates on the options<br/>
 **Right** - Check the option<br/>
@@ -18,8 +28,8 @@ Navigate with arrows
 **Enter/Return** - confirms the options selected<br/>
 **Esc** - Cancel/Exit<br/>
 
-###Code
-``` 
+####Code
+```
 'use strict';
 
 var list = require('./index')(
@@ -56,10 +66,7 @@ list.on('cancel', function(options){
 });
 ```
 
-![select-shell example image](https://raw.github.com/mralexgray/select-shell/selection-options/sample.png)
-
-
-###Optional configs
+####Optional configs
 ```
 var select = require('select-shell')(
   /* These are the default values */
@@ -78,20 +85,25 @@ var select = require('select-shell')(
 );
 ```
 
-###The scheme of color is equal to the module [colors](https://github.com/Marak/colors.js "module colors").
+####And for coffee drinkers, please see `sample.coffee`.
 
-  - bold
-  - italic
-  - underline
-  - inverse
-  - yellow
-  - cyan
-  - white
-  - magenta
-  - green
-  - red
-  - grey
-  - blue
-  - rainbow
-  - zebra
-  - random
+```coffee
+list = require('.')
+  pointer    : ' ► '
+  checked    : ' ◉  '
+  unchecked  : ' ◎  '
+  prepend    : true
+```
+
+####The scheme of color is equal to the module [colors](https://github.com/Marak/colors.js "module colors").
+
+| style | color | theme|
+|----------|------|------|
+| bold        | yellow   | rainbow |
+| italic      | cyan     | random  |
+| underline   | white    | zebra   |
+| inverse     | magenta  |         |
+|             | green    |         |
+|             | red      |         |
+|             | grey     |         |
+|             | blue     |         |
