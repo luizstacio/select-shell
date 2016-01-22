@@ -186,15 +186,7 @@ Select.prototype.uncheckoption = function () {
 Select.prototype.option = function (text, value) {
   value = value !== undefined ? value : text;
   
-  if(typeof text === 'object'){
-    text = text.map(function(text){
-      var t = typeof text === 'object';
-      return { text: t? text[0]:text, value: t? text[1]:text };
-    });
-    this.options = this.options.concat(text);
-  }else{
-    this.options.push({ text: text, value: value });
-  }
+  this.options.push({ text: text, value: value });
   this.optionsLength = this.options.length;
   return this;
 };
