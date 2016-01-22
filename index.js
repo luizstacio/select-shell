@@ -88,8 +88,10 @@ Select.prototype.render = function () {
     var prefix = ( position === me.pointerPosition ) ? me.config.pointer 
                                                      : me.config.pointer.replace(/[(\w\W)(\ )]/g, ' ')
 
-    var checked = me.optionsSelected.indexOf(option) !== -1 ? me.config.checked[ me.config.checkedColor ] 
+    var checked = me.config.multiSelect ? 
+                  me.optionsSelected.indexOf(option) !== -1 ? me.config.checked[ me.config.checkedColor ] 
                                                             : me.config.unchecked[ me.config.checkedColor ] 
+                  : '';
     
     me.currentoption = prefix.trim() ? option : me.currentoption;
     
@@ -184,7 +186,15 @@ Select.prototype.uncheckoption = function () {
 Select.prototype.option = function (text, value) {
   value = value !== undefined ? value : text;
   
-  this.options.push({ text: text, value: value });
+  if(typeof text === 'object'){
+    text = text.map(function(text){
+      var t = typeof text === 'object';
+      return { text: t? text[0]:text, value: t? text[1]:text };
+    });
+    this.options = this.options.concat(text);
+  }else{
+    this.options.push({ text: text, value: value });
+  }
   this.optionsLength = this.options.length;
   return this;
 };
@@ -217,7 +227,10 @@ Select.prototype.close = function () {
  * @api private
  */
 Select.prototype.selectoption = function () {
-  var r = this.config.multiSelect ? this.optionsSelected : this.optionsSelected[0];
+  if(!this.config.multiSelect){
+    this.checkoption();
+  }
+  var r = this.optionsSelected;
 
   this.close();
   this.select(r);
