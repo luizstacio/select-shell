@@ -88,8 +88,10 @@ Select.prototype.render = function () {
     var prefix = ( position === me.pointerPosition ) ? me.config.pointer 
                                                      : me.config.pointer.replace(/[(\w\W)(\ )]/g, ' ')
 
-    var checked = me.optionsSelected.indexOf(option) !== -1 ? me.config.checked[ me.config.checkedColor ] 
+    var checked = me.config.multiSelect ? 
+                  me.optionsSelected.indexOf(option) !== -1 ? me.config.checked[ me.config.checkedColor ] 
                                                             : me.config.unchecked[ me.config.checkedColor ] 
+                  : '';
     
     me.currentoption = prefix.trim() ? option : me.currentoption;
     
@@ -217,7 +219,10 @@ Select.prototype.close = function () {
  * @api private
  */
 Select.prototype.selectoption = function () {
-  var r = this.config.multiSelect ? this.optionsSelected : this.optionsSelected[0];
+  if(!this.config.multiSelect){
+    this.checkoption();
+  }
+  var r = this.optionsSelected;
 
   this.close();
   this.select(r);
