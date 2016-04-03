@@ -185,10 +185,17 @@ Select.prototype.uncheckoption = function () {
 Select.prototype.toggleoption = function () {
   var optionPosition = this.optionsSelected.indexOf(this.currentoption);
 
-  if ( optionPosition !== -1 ) {
-    this.uncheckoption();
+  if ( this.config.multiSelect ) {
+    if ( optionPosition !== -1 ) {
+      this.uncheckoption();
+    } else {
+      this.checkoption();
+    }
   } else {
+    // if in single select mode, just select the option
     this.checkoption();
+    readline.moveCursor(stream, 0, -1);/* remove new line */
+    this.selectoption();
   }
 };
 
