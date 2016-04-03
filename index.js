@@ -37,6 +37,7 @@ var Select = function (conf){
     checked: ' ✓',
     unchecked: '',
     checkedColor: 'green',
+    uncheckedColor: 'green',
     msgCancel: 'No selected options!',
     msgCancelColor: 'red',
     multiSelect: true,
@@ -90,7 +91,7 @@ Select.prototype.render = function () {
 
     var checked = me.config.multiSelect ? 
                   me.optionsSelected.indexOf(option) !== -1 ? me.config.checked[ me.config.checkedColor ] 
-                                                            : me.config.unchecked[ me.config.checkedColor ] 
+                                                            : me.config.unchecked[ me.config.uncheckedColor ] 
                   : '';
     
     me.currentoption = prefix.trim() ? option : me.currentoption;
