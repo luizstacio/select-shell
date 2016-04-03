@@ -178,6 +178,21 @@ Select.prototype.uncheckoption = function () {
 };
 
 /**
+ * Toggle the option
+ *
+ * @api private
+ */
+Select.prototype.toggleoption = function () {
+  var optionPosition = this.optionsSelected.indexOf(this.currentoption);
+
+  if ( optionPosition !== -1 ) {
+    this.uncheckoption();
+  } else {
+    this.checkoption();
+  }
+};
+
+/**
  * Add options in select list
  *
  * @return {Object/Class} Select
@@ -257,6 +272,9 @@ Select.prototype.keypress = function (ch, key) {
     break;
   case 'left':
     this.uncheckoption();
+    break;
+  case 'space':
+    this.toggleoption();
     break;
   case 'return':
     readline.moveCursor(stream, 0, -1);/* remove new line */
