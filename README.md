@@ -29,7 +29,7 @@ Simply navigate + make selection with the arrow keys...
 **Esc** - Cancel/Exit<br/>
 
 #### Code
-```
+```js
 'use strict';
 
 var list = require('./index')(
@@ -67,7 +67,7 @@ list.on('cancel', function(options){
 ```
 
 #### Optional configs
-```
+```js
 var select = require('select-shell')(
   /* These are the default values */
   {
