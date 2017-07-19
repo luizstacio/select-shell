@@ -37,6 +37,7 @@ var Select = function (conf){
     checked: ' ✓',
     unchecked: '',
     checkedColor: 'green',
+    uncheckedColor: 'green',
     msgCancel: 'No selected options!',
     msgCancelColor: 'red',
     multiSelect: true,
@@ -90,7 +91,7 @@ Select.prototype.render = function () {
 
     var checked = me.config.multiSelect ? 
                   me.optionsSelected.indexOf(option) !== -1 ? me.config.checked[ me.config.checkedColor ] 
-                                                            : me.config.unchecked[ me.config.checkedColor ] 
+                                                            : me.config.unchecked[ me.config.uncheckedColor ] 
                   : '';
     
     me.currentoption = prefix.trim() ? option : me.currentoption;
@@ -178,6 +179,28 @@ Select.prototype.uncheckoption = function () {
 };
 
 /**
+ * Toggle the option
+ *
+ * @api private
+ */
+Select.prototype.toggleoption = function () {
+  var optionPosition = this.optionsSelected.indexOf(this.currentoption);
+
+  if ( this.config.multiSelect ) {
+    if ( optionPosition !== -1 ) {
+      this.uncheckoption();
+    } else {
+      this.checkoption();
+    }
+  } else {
+    // if in single select mode, just select the option
+    this.checkoption();
+    readline.moveCursor(stream, 0, -1);/* remove new line */
+    this.selectoption();
+  }
+};
+
+/**
  * Add options in select list
  *
  * @return {Object/Class} Select
@@ -257,6 +280,9 @@ Select.prototype.keypress = function (ch, key) {
     break;
   case 'left':
     this.uncheckoption();
+    break;
+  case 'space':
+    this.toggleoption();
     break;
   case 'return':
     readline.moveCursor(stream, 0, -1);/* remove new line */
