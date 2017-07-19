@@ -1,7 +1,7 @@
 select-shell
 ============
 
-#####**Item selection _for commandline nodejs apps._**
+##### **Item selection _for commandline nodejs apps._**
 
 - [x] Easy to use.
 - [x] Single / multiple item-select.
@@ -13,12 +13,12 @@ select-shell
 ![select-shell example image](https://raw.github.com/mralexgray/select-shell/selection-options/sample.png)
 
 
-####Installation
+#### Installation
 ```
 npm install select-shell
 ```
 
-####Usage
+#### Usage
 
 Simply navigate + make selection with the arrow keys...
 
@@ -28,7 +28,7 @@ Simply navigate + make selection with the arrow keys...
 **Enter/Return** - confirms the options selected<br/>
 **Esc** - Cancel/Exit<br/>
 
-####Code
+#### Code
 ```
 'use strict';
 
@@ -66,7 +66,7 @@ list.on('cancel', function(options){
 });
 ```
 
-####Optional configs
+#### Optional configs
 ```
 var select = require('select-shell')(
   /* These are the default values */
@@ -85,7 +85,7 @@ var select = require('select-shell')(
 );
 ```
 
-####And for coffee drinkers, please see `sample.coffee`.
+#### And for coffee drinkers, please see `sample.coffee`.
 
 ```coffee
 list = require('.')
@@ -95,7 +95,7 @@ list = require('.')
   prepend    : true
 ```
 
-####The scheme of color is equal to the module [colors](https://github.com/Marak/colors.js "module colors").
+#### The scheme of color is equal to the module [colors](https://github.com/Marak/colors.js "module colors").
 
 | style | color | theme|
 |----------|------|------|
