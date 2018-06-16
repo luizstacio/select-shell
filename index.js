@@ -9,10 +9,6 @@ var eventEmitter = require('events').EventEmitter;
 var encode = require('./encode');
 var readline = require('colors');
 var readline = require('readline');
-var rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
 var stream = process.stdin;
 var processOut = process.stdout;
 
@@ -51,6 +47,10 @@ var Select = function (conf){
   this.currentoption = undefined;
   this.select = undefined;
   this.keypress = this.keypress.bind(this);
+  this.rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
 
   for ( var c in conf ) {
     this.config[c] = conf[c];
@@ -232,6 +232,7 @@ Select.prototype.list = function (onSelect) {
  * @api private
  */
 Select.prototype.close = function () {
+  this.rl.close();
   stream.removeListener('keypress', this.keypress);
   processOut.write(encode('[?25h'));
 };
