@@ -44,7 +44,8 @@ var list = require('./index')(
     msgCancelColor: 'orange',
     multiSelect: true,
     inverse: true,
-    prepend: true
+    prepend: true,
+    disableInput: true
   }
 );
 
@@ -80,7 +81,8 @@ var select = require('select-shell')(
     msgCancelColor: 'red',
     multiSelect: true,
     inverse: false,
-    prepend: false
+    prepend: false,
+    disableInput: true
   }
 );
 ```

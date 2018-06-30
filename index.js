@@ -4,13 +4,16 @@
  * Module dependencies.
  *
  */
-var events = require('events');
 var eventEmitter = require('events').EventEmitter;
 var encode = require('./encode');
-var readline = require('colors');
+var colors = require('colors');
 var readline = require('readline');
 var stream = process.stdin;
 var processOut = process.stdout;
+
+process.on('exit', function () {
+  processOut.write(encode('[?25h'));
+})
 
 /**
  * Expose function invoke
@@ -38,7 +41,8 @@ var Select = function (conf){
     msgCancelColor: 'red',
     multiSelect: true,
     inverse: false,
-    prepend: false
+    prepend: false,
+    disableInput: true
   };
   this.options = [];
   this.optionsLength = 0;
@@ -47,6 +51,7 @@ var Select = function (conf){
   this.currentoption = undefined;
   this.select = undefined;
   this.keypress = this.keypress.bind(this);
+  this.onData = this.onData.bind(this);
   this.rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
@@ -61,7 +66,20 @@ var Select = function (conf){
     process.exit();
   })
   stream.on('keypress', this.keypress);
+  stream.on('data', this.onData);
 };
+
+
+/**
+ * Disable input
+ *
+ * @api private
+ */
+Select.prototype.onData = function () {
+  if (this.config.disabledInput) {
+    readline.clearLine(processOut);
+  }
+}
 
 /**
  * Inherit from `EventEmitter.prototype`.
