@@ -10,7 +10,7 @@ var encode = module.exports = function (xs) {
         }
     }
     
-    return new Buffer([ 0x1b ].concat(bytes(xs)));
+    return new Buffer.from([ 0x1b ].concat(bytes(xs)));
 };
 
 var ord = encode.ord = function ord (c) {

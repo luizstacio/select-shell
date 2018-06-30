@@ -56,6 +56,10 @@ var Select = function (conf){
     this.config[c] = conf[c];
   }
 
+  stream.on('error', function (err) {
+    console.error(err);
+    process.exit();
+  })
   stream.on('keypress', this.keypress);
 };
 
@@ -121,9 +125,9 @@ Select.prototype.changeSelected = function () {
  * @api private
  */
 Select.prototype.clearList = function (postionCursor) {
-  readline.cursorTo(stream, 0);
-  readline.moveCursor(stream, 0, -this.optionsLength);
-  readline.clearScreenDown(stream);
+  readline.cursorTo(processOut, 0);
+  readline.moveCursor(processOut, 0, -this.optionsLength);
+  readline.clearScreenDown(processOut);
 };
 
 /**
@@ -195,7 +199,7 @@ Select.prototype.toggleoption = function () {
   } else {
     // if in single select mode, just select the option
     this.checkoption();
-    readline.moveCursor(stream, 0, -1);/* remove new line */
+    readline.moveCursor(processOut, 0, -1);/* remove new line */
     this.selectoption();
   }
 };
@@ -286,7 +290,7 @@ Select.prototype.keypress = function (ch, key) {
     this.toggleoption();
     break;
   case 'return':
-    readline.moveCursor(stream, 0, -1);/* remove new line */
+    readline.moveCursor(processOut, 0, -1);/* remove new line */
     this.selectoption();
     break;
   case 'escape':
