@@ -105,23 +105,25 @@ Select.prototype.__proto__ = eventEmitter.prototype;
  */
 Select.prototype.render = function () {
   var me = this;
+  var indent = me.config.pointer.replace(/./g, ' ');
+  var checkedChar = me.config.checked[ me.config.checkedColor ];
+  var uncheckedChar = me.config.unchecked[ me.config.uncheckedColor ];
 
   me.options.forEach(function(option, position){
-    
-    var prefix = ( position === me.pointerPosition ) ? me.config.pointer 
-                                                     : me.config.pointer.replace(/[(\w\W)(\ )]/g, ' ')
 
-    var checked = me.config.multiSelect ? 
-                  me.optionsSelected.indexOf(option) !== -1 ? me.config.checked[ me.config.checkedColor ] 
-                                                            : me.config.unchecked[ me.config.uncheckedColor ] 
+    var isHighlighted = (position === me.pointerPosition);
+    var prefix = isHighlighted ? me.config.pointer : indent;
+
+    var checked = me.config.multiSelect ?
+                  me.optionsSelected.indexOf(option) !== -1 ? checkedChar : uncheckedChar
                   : '';
-    
-    me.currentoption = prefix.trim() ? option : me.currentoption;
-    
-    console.log( prefix[ me.config.pointerColor ] + 
-                (me.config.prepend ? checked : '') + 
+
+    me.currentoption = isHighlighted ? option : me.currentoption;
+
+    console.log( prefix[ me.config.pointerColor ] +
+                (me.config.prepend ? checked : '') +
                 (position === me.pointerPosition && me.config.inverse ? option.text[ 'inverse' ] : option.text) +
-                (me.config.prepend ? '' : checked) 
+                (me.config.prepend ? '' : checked)
     );
   });
   processOut.write(encode('[?25l'));
