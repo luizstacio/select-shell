@@ -32,7 +32,7 @@ Simply navigate + make selection with the arrow keys...
 ```js
 'use strict';
 
-var list = require('./index')(
+var list = require('select-shell')(
   /* possible configs */
   {
     pointer: ' ▸ ',
